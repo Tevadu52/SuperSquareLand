@@ -13,7 +13,7 @@ public class HeroEntity : MonoBehaviour
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
     private bool doDash = false;
-    private float startDash;
+    private float timeDash = 0f;
     private bool isDashing = false;
 
     [Header("Orientation")]
@@ -50,14 +50,15 @@ public class HeroEntity : MonoBehaviour
         if (doDash)
         {
             doDash = false;
-            startDash = Time.realtimeSinceStartup;
+            timeDash = 0f;
             isDashing = true;
         }
         if (isDashing)
         {
+            timeDash += Time.fixedDeltaTime;
             _horizontalSpeed = _dashSettings.speed;
         }
-        if (isDashing && Time.realtimeSinceStartup - startDash > _dashSettings.duration)
+        if (isDashing && timeDash > _dashSettings.duration)
         {
             isDashing = false;
             _horizontalSpeed = _movementsSettings.speedMax;
