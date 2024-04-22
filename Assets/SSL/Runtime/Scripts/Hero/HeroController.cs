@@ -8,6 +8,27 @@ public class HeroController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool _guiDebug = false;
 
+    private void Update()
+    {
+        _entity.SetMoveDirX(GetInputMoveX());
+    }
+
+    private float GetInputMoveX()
+    {
+        float inputMoveX = 0f;
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.Q))
+        {
+            inputMoveX = -1f;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            inputMoveX = 1f;
+        }
+
+        return inputMoveX;
+    }
+
     private void OnGUI()
     {
         if (!_guiDebug) return;
