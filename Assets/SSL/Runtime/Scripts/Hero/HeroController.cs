@@ -11,6 +11,7 @@ public class HeroController : MonoBehaviour
     private void Update()
     {
         _entity.SetMoveDirX(GetInputMoveX());
+        GetInputDash();
     }
 
     private float GetInputMoveX()
@@ -27,6 +28,14 @@ public class HeroController : MonoBehaviour
         }
 
         return inputMoveX;
+    }
+
+    private void GetInputDash()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            _entity.SetDash();
+        }
     }
 
     private void OnGUI()

@@ -7,8 +7,14 @@ public class HeroEntity : MonoBehaviour
 
     [Header("Horizontal Movements")]
     [SerializeField] private HeroHorizontalMovementsSettings _movementsSettings;
-    private float _horizontalSpeed = 5f;
+    private float _horizontalSpeed;
     private float _moveDirX = 0f;
+
+    [Header("Dash")]
+    [SerializeField] private HeroDashSettings _dashSettings;
+    private bool doDash = false;
+    private float startDash;
+    private bool isDashing = false;
 
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
@@ -22,6 +28,11 @@ public class HeroEntity : MonoBehaviour
         _moveDirX = dirX;
     }
 
+    public void SetDash()
+    {
+        doDash = true;
+    }
+
     private void FixedUpdate()
     {
         if(_AreOrientAndMovementOpposite())
@@ -32,6 +43,25 @@ public class HeroEntity : MonoBehaviour
             _ChangeOrientFromHorizontalMovement();
         }
         _ApplyHorizontalSpeed();
+        Dash();
+    }
+    private void Dash()
+    {
+        if (doDash)
+        {
+            doDash = false;
+            startDash = Time.realtimeSinceStartup;
+            isDashing = true;
+        }
+        if (isDashing)
+        {
+            _horizontalSpeed = _dashSettings.speed;
+        }
+        if (isDashing && Time.realtimeSinceStartup - startDash > _dashSettings.duration)
+        {
+            isDashing = false;
+            _horizontalSpeed = _movementsSettings.speedMax;
+        }
     }
 
     private void _ChangeOrientFromHorizontalMovement()
@@ -49,7 +79,8 @@ public class HeroEntity : MonoBehaviour
 
     private void _UpdateHorizontalSpeed()
     {
-        if(_moveDirX != 0f)
+        if (isDashing) return;
+        if (_moveDirX != 0f)
         {
             _Accelerate();
         } else {
