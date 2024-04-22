@@ -43,9 +43,9 @@ public class HeroEntity : MonoBehaviour
             _ChangeOrientFromHorizontalMovement();
         }
         _ApplyHorizontalSpeed();
-        Dash();
+        updateDash();
     }
-    private void Dash()
+    private void updateDash()
     {
         if (doDash)
         {
