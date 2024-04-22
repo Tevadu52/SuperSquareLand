@@ -12,7 +12,6 @@ public class HeroEntity : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
-    private bool doDash = false;
     private float timeDash = 0f;
     private bool isDashing = false;
 
@@ -30,7 +29,8 @@ public class HeroEntity : MonoBehaviour
 
     public void SetDash()
     {
-        doDash = true;
+        timeDash = 0f;
+        isDashing = true;
     }
 
     private void FixedUpdate()
@@ -43,16 +43,11 @@ public class HeroEntity : MonoBehaviour
             _ChangeOrientFromHorizontalMovement();
         }
         _ApplyHorizontalSpeed();
-        updateDash();
+        _UpdateDash();
     }
-    private void updateDash()
+
+    private void _UpdateDash()
     {
-        if (doDash)
-        {
-            doDash = false;
-            timeDash = 0f;
-            isDashing = true;
-        }
         if (isDashing)
         {
             timeDash += Time.fixedDeltaTime;
