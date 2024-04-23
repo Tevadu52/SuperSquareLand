@@ -10,8 +10,22 @@ public class HeroController : MonoBehaviour
 
     private void Update()
     {
-        _entity.SetMoveDirX(GetInputMoveX());
-        GetInputDash();
+        _entity.SetMoveDirX(GetInputMoveX()); 
+
+        if (GetInputDash())
+        {
+            if(!_entity.IsDashing)
+            {
+                _entity.StartDash();
+            }
+        }
+        if (GetInputJump())
+        {
+            if (_entity.IsTouchingGround && !_entity.IsJumping)
+            {
+                _entity.StartJump();
+            }
+        }
     }
 
     private float GetInputMoveX()
@@ -30,12 +44,14 @@ public class HeroController : MonoBehaviour
         return inputMoveX;
     }
 
-    private void GetInputDash()
+    private bool GetInputDash()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            _entity.StartDash();
-        }
+        return Input.GetKeyDown(KeyCode.E);
+    }
+
+    private bool GetInputJump()
+    {
+        return Input.GetKeyDown(KeyCode.Space);
     }
 
     private void OnGUI()
