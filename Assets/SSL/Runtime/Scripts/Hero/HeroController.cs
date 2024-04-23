@@ -34,7 +34,7 @@ public class HeroController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            _entity.SetDash();
+            _entity.StartDash();
         }
     }
 
