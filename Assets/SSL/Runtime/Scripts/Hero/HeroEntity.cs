@@ -43,6 +43,8 @@ public class HeroEntity : MonoBehaviour
     private JumpState _jumpState = JumpState.NotJumping;
     private float _jumpTimer = 0f;
     public bool IsJumping => _jumpState != JumpState.NotJumping;
+    public bool IsJumpImpulsing => _jumpState == JumpState.JumpImpulsion;
+    public bool IsJumpMinDurationReached => _jumpTimer >= _jumpSettings.jumpMinDuration;
 
     [Header("Debug")]
     [SerializeField] private bool _guiDebug = false;
@@ -183,6 +185,11 @@ public class HeroEntity : MonoBehaviour
     {
         _jumpState = JumpState.JumpImpulsion;
         _jumpTimer = 0f;
+    }
+
+    public void StopJumpImpulsion()
+    {
+        _jumpState = JumpState.Falling;
     }
 
     private void _UpdateJumpStateImpulsion()
