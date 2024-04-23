@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class HeroEntity : MonoBehaviour
 {
@@ -6,9 +7,15 @@ public class HeroEntity : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
 
     [Header("Horizontal Movements")]
-    [SerializeField] private HeroHorizontalMovementsSettings _movementsSettings;
+    [FormerlySerializedAs("_movementsSettings")]
+    [SerializeField] private HeroHorizontalMovementsSettings _groundHorizontalMovementsSettings;
+    [SerializeField] private HeroHorizontalMovementsSettings _airHorizontalmovementsSettings;
     private float _horizontalSpeed;
     private float _moveDirX = 0f;
+    private HeroHorizontalMovementsSettings _GetHeroHorizontalMovementsSettings()
+    {
+        return IsTouchingGround ? _groundHorizontalMovementsSettings : _airHorizontalmovementsSettings;
+    }
 
     [Header("Dash")]
     [SerializeField] private HeroDashSettings _dashSettings;
@@ -54,11 +61,12 @@ public class HeroEntity : MonoBehaviour
     {
         _ApplyGroundDetector();
 
-        if(_AreOrientAndMovementOpposite())
+        HeroHorizontalMovementsSettings horizontalMovementsSettings = _GetHeroHorizontalMovementsSettings();
+        if (_AreOrientAndMovementOpposite())
         {
-            turnBack();
+            turnBack(horizontalMovementsSettings);
         }  else {
-            _UpdateHorizontalSpeed();
+            _UpdateHorizontalSpeed(horizontalMovementsSettings);
             _ChangeOrientFromHorizontalMovement();
         }
         if(IsJumping)
@@ -75,7 +83,7 @@ public class HeroEntity : MonoBehaviour
 
         if (IsDashing)
         {
-            _UpdateDash();
+            _UpdateDash(horizontalMovementsSettings);
         }
 
         _ApplyHorizontalSpeed();
@@ -89,7 +97,7 @@ public class HeroEntity : MonoBehaviour
         _dashTimer = 0f;
     }
 
-    private void _UpdateDash()
+    private void _UpdateDash(HeroHorizontalMovementsSettings settings)
     {
         _dashTimer += Time.fixedDeltaTime;
         if (_dashTimer < _dashSettings.duration)
@@ -97,7 +105,7 @@ public class HeroEntity : MonoBehaviour
             _horizontalSpeed = _dashSettings.speed;
         } else {
             IsDashing = false;
-            _horizontalSpeed = _movementsSettings.speedMax;
+            _horizontalSpeed = settings.speedMax;
         }
     }
     #endregion Dash Move
@@ -115,39 +123,39 @@ public class HeroEntity : MonoBehaviour
         _rigidbody.velocity = velocity;
     }
 
-    private void _UpdateHorizontalSpeed()
+    private void _UpdateHorizontalSpeed(HeroHorizontalMovementsSettings settings)
     {
         if (_moveDirX != 0f)
         {
-            _Accelerate();
+            _Accelerate(settings);
         } else {
-            _Deccelerate();
+            _Deccelerate(settings);
         }
     }
     #endregion Horizontal Move
 
     #region Speed Change
-    private void _Accelerate()
+    private void _Accelerate(HeroHorizontalMovementsSettings settings)
     {
-        _horizontalSpeed += _movementsSettings.acceleration * Time.fixedDeltaTime;
-        if (_horizontalSpeed > _movementsSettings.speedMax)
+        _horizontalSpeed += settings.acceleration * Time.fixedDeltaTime;
+        if (_horizontalSpeed > settings.speedMax)
         {
-            _horizontalSpeed = _movementsSettings.speedMax;
+            _horizontalSpeed = settings.speedMax;
         }
     }
 
-    private void _Deccelerate()
+    private void _Deccelerate(HeroHorizontalMovementsSettings settings)
     {
-        _horizontalSpeed -= _movementsSettings.acceleration * Time.fixedDeltaTime;
+        _horizontalSpeed -= settings.acceleration * Time.fixedDeltaTime;
         if (_horizontalSpeed < 0f)
         {
             _horizontalSpeed = 0f;
         }
     }
 
-    private void turnBack()
+    private void turnBack(HeroHorizontalMovementsSettings settings)
     {
-        _horizontalSpeed -= _movementsSettings.turnBackFriction * Time.fixedDeltaTime;
+        _horizontalSpeed -= settings.turnBackFriction * Time.fixedDeltaTime;
         if (_horizontalSpeed < 0f)
         {
             _horizontalSpeed = 0f;

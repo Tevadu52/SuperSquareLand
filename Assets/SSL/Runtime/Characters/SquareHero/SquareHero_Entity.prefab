@@ -846,11 +846,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rigidbody: {fileID: 7212136366118121974}
-  _movementsSettings:
+  _groundHorizontalMovementsSettings:
     acceleration: 20
     decceleration: 15
     turnBackFriction: 25
     speedMax: 5
+  _airHorizontalmovementsSettings:
+    acceleration: 20
+    decceleration: 7
+    turnBackFriction: 100
+    speedMax: 6
   _dashSettings:
     speed: 40
     duration: 0.1
