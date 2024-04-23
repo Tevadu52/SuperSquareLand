@@ -856,9 +856,12 @@ MonoBehaviour:
     decceleration: 7
     turnBackFriction: 100
     speedMax: 6
-  _dashSettings:
+  _groundDashSettings:
     speed: 40
     duration: 0.1
+  _airDashSettings:
+    speed: 40
+    duration: 0.05
   _orientVisualRoot: {fileID: 3024582456938629764}
   _fallSettings:
     fallGravity: 20
@@ -871,7 +874,12 @@ MonoBehaviour:
   _jumpFallSettings:
     fallGravity: 60
     fallSpeedMax: 20
-  _guiDebug: 0
+  _jumpHorizontalmovementsSettings:
+    acceleration: 20
+    decceleration: 2
+    turnBackFriction: 200
+    speedMax: 7
+  _guiDebug: 1
 --- !u!114 &8939371359579837014
 MonoBehaviour:
   m_ObjectHideFlags: 0

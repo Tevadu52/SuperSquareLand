@@ -14,12 +14,20 @@ public class HeroEntity : MonoBehaviour
     private float _moveDirX = 0f;
     private HeroHorizontalMovementsSettings _GetHeroHorizontalMovementsSettings()
     {
+        if (IsJumping) return _jumpHorizontalmovementsSettings;
         return IsTouchingGround ? _groundHorizontalMovementsSettings : _airHorizontalmovementsSettings;
     }
 
     [Header("Dash")]
-    [SerializeField] private HeroDashSettings _dashSettings;
+    [FormerlySerializedAs("_dashSettings")]
+    [SerializeField] private HeroDashSettings _groundDashSettings;
+    [SerializeField] private HeroDashSettings _airDashSettings;
     private float _dashTimer = 0f;
+    private float speedBeforeDash;
+    private HeroDashSettings _GetHeroDashSettings()
+    {
+        return IsTouchingGround ? _groundDashSettings : _airDashSettings;
+    }
     public bool IsDashing { get; private set; } = false;
 
     [Header("Orientation")]
@@ -39,6 +47,7 @@ public class HeroEntity : MonoBehaviour
     [Header("Jump")]
     [SerializeField] private HeroJumpSettings _jumpSettings;
     [SerializeField] private HeroFallSetting _jumpFallSettings;
+    [SerializeField] private HeroHorizontalMovementsSettings _jumpHorizontalmovementsSettings;
 
     enum JumpState
     {
@@ -62,6 +71,7 @@ public class HeroEntity : MonoBehaviour
         _ApplyGroundDetector();
 
         HeroHorizontalMovementsSettings horizontalMovementsSettings = _GetHeroHorizontalMovementsSettings();
+        HeroDashSettings dashSettings = _GetHeroDashSettings();
         if (_AreOrientAndMovementOpposite())
         {
             turnBack(horizontalMovementsSettings);
@@ -73,7 +83,7 @@ public class HeroEntity : MonoBehaviour
         {
             _UpdateJump();
         } else {
-            if(!IsTouchingGround)
+            if(!IsTouchingGround && !IsDashing)
             {
                 _ApplyFallGravity(_fallSettings);
             } else {
@@ -83,7 +93,7 @@ public class HeroEntity : MonoBehaviour
 
         if (IsDashing)
         {
-            _UpdateDash(horizontalMovementsSettings);
+            _UpdateDash(dashSettings);
         }
 
         _ApplyHorizontalSpeed();
@@ -95,17 +105,19 @@ public class HeroEntity : MonoBehaviour
     {
         IsDashing = true;
         _dashTimer = 0f;
+        speedBeforeDash = _horizontalSpeed;
+        StopJumpImpulsion();
     }
 
-    private void _UpdateDash(HeroHorizontalMovementsSettings settings)
+    private void _UpdateDash(HeroDashSettings settings)
     {
         _dashTimer += Time.fixedDeltaTime;
-        if (_dashTimer < _dashSettings.duration)
+        if (_dashTimer < settings.duration)
         {
-            _horizontalSpeed = _dashSettings.speed;
+            _horizontalSpeed = settings.speed;
         } else {
             IsDashing = false;
-            _horizontalSpeed = settings.speedMax;
+            _horizontalSpeed = speedBeforeDash;
         }
     }
     #endregion Dash Move

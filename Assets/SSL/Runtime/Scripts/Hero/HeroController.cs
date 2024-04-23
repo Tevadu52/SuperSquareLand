@@ -5,6 +5,10 @@ public class HeroController : MonoBehaviour
     [Header("Entity")]
     [SerializeField] private HeroEntity _entity;
     private bool _entityWasTouchingGround = false;
+    private bool _EntityAsExitGround()
+    {
+        return _entityWasTouchingGround && !_entity.IsTouchingGround;
+    }
 
     [Header("Jump Buffer")]
     [SerializeField] private float _jumpBufferDuration = 0.2f;
@@ -144,11 +148,6 @@ public class HeroController : MonoBehaviour
     }
 
     #endregion Coyote Time
-
-    private bool _EntityAsExitGround()
-    {
-        return _entityWasTouchingGround && !_entity.IsTouchingGround;
-    }
 
     private void OnGUI()
     {
