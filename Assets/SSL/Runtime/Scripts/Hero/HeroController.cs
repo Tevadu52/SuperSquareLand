@@ -52,6 +52,14 @@ public class HeroController : MonoBehaviour
             if ((_entity.IsTouchingGround || _IsCoyoteTimeActive()) && !_entity.IsJumping)
             {
                 _entity.StartJump();
+            }
+            else if ((_entity.IsTouchingLeftWall || _entity.IsTouchingRightWall) && !_entity.IsJumping)
+            {
+                _entity.StartWallJump();
+            }
+            else if (!_entity.IsTouchingGround && !_entity.IsJumpImpulsing && !_entity.IsLastJumpReached)
+            {
+                _entity.StartAirJump();
             } else {
                 _ResetJumpBuffer();
             }
