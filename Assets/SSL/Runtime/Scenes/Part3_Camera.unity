@@ -1534,7 +1534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraProfilType: 1
-  _targetToFollow: {fileID: 732721623840024182}
+  _targetToFollow: {fileID: 732721623840024185}
 --- !u!1 &1641381205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,6 +1821,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 182482925853841835, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
   m_PrefabInstance: {fileID: 732721623840024181}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &732721623840024185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 99886148992210748, guid: 58ffc10b51f5a6a4996c22f63f520b49, type: 3}
+  m_PrefabInstance: {fileID: 732721623840024181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4751816c8c6ac5a44afabfd183909ca0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

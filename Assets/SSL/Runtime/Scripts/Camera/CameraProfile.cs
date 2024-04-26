@@ -6,7 +6,7 @@ public class CameraProfile : MonoBehaviour
     [SerializeField]private CameraProfileType _cameraProfilType = CameraProfileType.Static;
 
     [Header("Follow")]
-    [SerializeField] private Transform _targetToFollow = null;
+    [SerializeField] private CameraFollowable _targetToFollow = null;
 
     private Camera _camera;
 
@@ -16,7 +16,7 @@ public class CameraProfile : MonoBehaviour
 
     public CameraProfileType ProfileType => _cameraProfilType;
 
-    public Transform TargetToFollow => _targetToFollow;
+    public CameraFollowable TargetToFollow => _targetToFollow;
 
 
     private void Awake()
