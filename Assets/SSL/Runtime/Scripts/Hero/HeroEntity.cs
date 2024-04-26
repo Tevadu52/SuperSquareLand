@@ -388,7 +388,7 @@ public class HeroEntity : MonoBehaviour
     private void _UpdateCameraFollowPosition()
     {
         _cameraFollowable.FollowPositionX = _rigidbody.position.x;
-        if(IsTouchingGround && !IsJumping)
+        if(IsTouchingGround || IsTouchingLeftWall || IsTouchingRightWall)
         {
             _cameraFollowable.FollowPositionY = _rigidbody.position.y;
         }
