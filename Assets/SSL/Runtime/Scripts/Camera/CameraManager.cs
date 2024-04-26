@@ -18,6 +18,8 @@ public class CameraManager : MonoBehaviour
     private float _profileTransitionStartSize;
     //Follow
     private Vector3 _profileLastFollowDestination;
+    //Auto Scroll
+    private Vector3 _profileAutoScrollPosition;
     //Damping
     private Vector3 _dampedPosition;
     //Offset
@@ -66,6 +68,7 @@ public class CameraManager : MonoBehaviour
 
     public void EnterProfile(CameraProfile profile, CameraProfileTransition transition = null)
     {
+        if (profile.ProfileType == CameraProfileType.AutoScroll) _profileAutoScrollPosition = profile.Position;
         _currentCameraProfile = profile;
         if (transition != null) _PlayProfileTransition(transition);
         _SetCameraDampedPosition(_FindCameraNextPosition());
@@ -117,7 +120,7 @@ public class CameraManager : MonoBehaviour
 
     private Vector3 _FindCameraNextPosition()
     {
-        if(_currentCameraProfile.ProfileType == CameraProfileType.FollowTarget)
+        if (_currentCameraProfile.ProfileType == CameraProfileType.FollowTarget)
         {
             if(_currentCameraProfile.TargetToFollow != null)
             {
@@ -126,6 +129,12 @@ public class CameraManager : MonoBehaviour
                 _profileLastFollowDestination.y = targetToFollow.FollowPositionY;
                 return _profileLastFollowDestination;
             }
+        }
+        else if (_currentCameraProfile.ProfileType == CameraProfileType.AutoScroll)
+        {
+            _profileAutoScrollPosition.x += _currentCameraProfile.AutoScrollHorizontal * Time.deltaTime;
+            _profileAutoScrollPosition.y += _currentCameraProfile.AutoScrollVertical * Time.deltaTime;
+            return _profileAutoScrollPosition;
         }
 
         return _currentCameraProfile.Position;
