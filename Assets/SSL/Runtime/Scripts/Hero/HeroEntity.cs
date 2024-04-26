@@ -39,6 +39,7 @@ public class HeroEntity : MonoBehaviour
     [Header("Orientation")]
     [SerializeField] private Transform _orientVisualRoot;
     private float _orientX = 1f;
+    public float OrientX => _orientX;
 
     [Header("Fall")]
     [SerializeField] private HeroFallSetting _fallSettings;
@@ -388,7 +389,7 @@ public class HeroEntity : MonoBehaviour
     private void _UpdateCameraFollowPosition()
     {
         _cameraFollowable.FollowPositionX = _rigidbody.position.x;
-        if(IsTouchingGround || IsTouchingLeftWall || IsTouchingRightWall)
+        if (IsTouchingGround || IsTouchingLeftWall || IsTouchingRightWall)
         {
             _cameraFollowable.FollowPositionY = _rigidbody.position.y;
         }
